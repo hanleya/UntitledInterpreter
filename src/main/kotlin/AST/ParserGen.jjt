@@ -1,0 +1,295 @@
+
+options {
+  MULTI=true;
+  NODE_DEFAULT_VOID=true;
+}
+
+PARSER_BEGIN(Parser)
+
+package AST;
+
+import java.util.ArrayList;
+
+public class Parser {
+
+    /** Main entry point. */
+    public static ASTStart parse(java.io.InputStream stream) {
+        System.out.println("Reading from standard input...");
+        Parser t = new Parser(stream);
+        ASTStart n = null;
+        try {
+            n = t.Start();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+        return n;
+    }
+
+}
+
+PARSER_END(Parser)
+
+SKIP : /* WHITE SPACE */
+{
+  " "
+| "\t"
+| "\n"
+| "\r"
+| "\f"
+}
+
+TOKEN : /* NUMBER */
+{
+    < NUMBER_LITERAL: (<DIGIT>)+ ("." (<DIGIT>)+)? >
+    | < #DIGIT: ["0"-"9"] >
+}
+
+TOKEN : /* ARITHMETIC & BOOLEAN OPERATORS */
+{
+      < PLUS: "+" >
+    | < MINUS: "-" >
+    | < MUL: "*" >
+    | < DIV: "/" >
+    | < MOD: "%" >
+    | < POWER: "**" >
+
+    | < AND: "&&" >
+    | < OR: "||" >
+    | < NOT: "!" >
+
+    | < EQ: "==" >
+    | < NEQ: "!=" | "=1" >
+    | < LT: "<" >
+    | < LEQ: "<=" | "=<">
+    | < GT: ">" >
+    | < GEQ: ">=" | "=>" >
+
+    | < LPAREN: "(" >
+    | < RPAREN: ")" >
+    | < LBRACE: "[" >
+    | < RBRACE: "]" >
+    | < LBRACKET: "{" >
+    | < RBRACKET: "}" >
+
+    | < ASSIGN : "=" >
+    | < ASADD : "=+" | "+=" >
+    | < ASSUB : "=-" | "-=" >
+    | < ASMUL : "=*" | "*=" >
+    | < ASDIV : "=/" | "/=" >
+    | < ASMOD : "=%" | "%=" >
+
+    | < INC : "++" >
+    | < DEC : "--" >
+
+    | < COMMA : "," >
+    | < DOT : "." >
+    | < COLON : ":" >
+    | < SCOLON : ";" >
+    | < ARROW : "->" >
+
+}
+
+TOKEN : /* KEYWORDS */
+{
+      < CLASS : "class" >
+    | < FALSE : "false" >
+    | < FUNC : "func" >
+    | < IF : "if" >
+    | < LET : "let" >
+    | < RETURN : "return" >
+    | < TRUE : "true" >
+    | < VOID : "void" >
+    | < WHILE : "while" >
+}
+
+TOKEN : /* IDENTIFIER */
+{
+    < IDENTIFIER: (<LETTER> | "_") (<LETTER> | <DIGIT> | "_")* >
+    | < #LETTER: ["a"-"z", "A"-"Z"] >
+}
+
+/** Main production. */
+ASTStart Start() #Start : {}
+{
+    ( Function() )*
+    { return jjtThis; }
+}
+
+
+
+/* FUNCTION DECLARATION */
+
+void Function() #Function : {}
+{
+    FunctionHead()
+    Block()
+}
+
+void FunctionHead() : {}
+{
+    <FUNC> <IDENTIFIER> #Identifier
+    <LPAREN> DefParamList() <RPAREN>
+    (<ARROW> Type())?
+}
+
+void DefParamList() #FuncParams : {}
+{
+    ( DefParam() ( <COMMA> DefParam())* )?
+}
+
+void DefParam() #FuncParam(2) : {}
+{
+     <IDENTIFIER> #Identifier <COLON> Type()
+}
+
+
+
+/* CONTROL FLOW & STATEMENTS */
+
+void Block() #Block : {}
+{
+    <LBRACKET> (Statement())* <RBRACKET>
+}
+
+void Statement() : {}
+{
+    (VarDecl() <SCOLON>) | (Expression() <SCOLON>)
+}
+
+void VarDecl() #VarDecl(3) : {}
+{
+    <LET> <IDENTIFIER> #Identifier
+    <COLON> Type() <ASSIGN> Expression()
+}
+
+
+/* DATA CONSTRUCTS? */
+
+void Type() #Type : {}
+{
+    <IDENTIFIER>
+}
+
+
+
+/* EXPRESSIONS */
+
+void Expression() : {}
+{
+    AssignmentExp()
+}
+
+void AssignmentExp() #AssignmentExp(>1) : {}
+{
+    OrExp()
+    (
+        (
+              ( <ASSIGN>  { jjtThis.type = ASTAssignmentExp.EXP_TYPE.ASSIGN; } )
+            | ( <ASADD>   { jjtThis.type = ASTAssignmentExp.EXP_TYPE.APLUS; } )
+            | ( <ASSUB>   { jjtThis.type = ASTAssignmentExp.EXP_TYPE.AMINUS; } )
+            | ( <ASMUL>   { jjtThis.type = ASTAssignmentExp.EXP_TYPE.AMUL; } )
+            | ( <ASDIV>   { jjtThis.type = ASTAssignmentExp.EXP_TYPE.ADIV; } )
+            | ( <ASMOD>   { jjtThis.type = ASTAssignmentExp.EXP_TYPE.AMOD; } )
+        )
+        AssignmentExp()
+    )?
+}
+
+void OrExp() #OrExp(>1) : {}
+{
+    AndExp() ( <OR> AndExp() )*
+}
+void AndExp() #AndExp(>1) : {}
+{
+    BoolExp() ( <AND> BoolExp() )*
+}
+
+void BoolExp() #BoolExp(>1) : {}
+{
+    AddExp()
+    (
+        (
+              ( <EQ>    { jjtThis.type = ASTBoolExp.EXP_TYPE.EQ; } )
+            | ( <NEQ>   { jjtThis.type = ASTBoolExp.EXP_TYPE.NEQ; } )
+            | ( <LT>    { jjtThis.type = ASTBoolExp.EXP_TYPE.LT; } )
+            | ( <LEQ>   { jjtThis.type = ASTBoolExp.EXP_TYPE.LEQ; } )
+            | ( <GT>    { jjtThis.type = ASTBoolExp.EXP_TYPE.GT; } )
+            | ( <GEQ>   { jjtThis.type = ASTBoolExp.EXP_TYPE.GEQ; } )
+        )
+        AddExp()
+    )?
+}
+
+void AddExp() #AddExp(>1) : { ArrayList<ASTAddExp.OP> arr = jjtThis.op; }
+{
+    MulExp() (
+        (
+              ( <PLUS>    { arr.add(ASTAddExp.OP.PLUS); } )
+            | ( <MINUS>   { arr.add(ASTAddExp.OP.MINUS); } )
+        )
+        MulExp()
+    )*
+}
+void MulExp() #MulExp(>1) : { ArrayList<ASTMulExp.OP> arr = jjtThis.op; }
+{
+    ExpoExp() (
+        (
+              ( <MUL>   { arr.add(ASTMulExp.OP.MUL); } )
+            | ( <DIV>   { arr.add(ASTMulExp.OP.DIV); } )
+            | ( <MOD>   { arr.add(ASTMulExp.OP.MOD); } )
+        )
+        ExpoExp()
+    )*
+}
+void ExpoExp() #ExpoExp(>1) : {}
+{
+    PrefixExp() ( <POWER> ExpoExp() )?
+}
+
+void PrefixExp() : { boolean prefix = false; }
+{
+    (
+        (
+            (
+                  <INC> { jjtThis.op = ASTPrefixExp.OP.INC; }
+                | <DEC> { jjtThis.op = ASTPrefixExp.OP.DEC; }
+                | <NOT> { jjtThis.op = ASTPrefixExp.OP.NOT; }
+            )
+            { prefix = true; }
+        )?
+        SuffixExp()
+    ) #PrefixExp(prefix)
+}
+void SuffixExp() : { boolean suffix = false; }
+{
+    (
+        AccessExp()
+        (
+            (
+                  <INC> { jjtThis.op = ASTSuffixExp.OP.INC; }
+                | <DEC> { jjtThis.op = ASTSuffixExp.OP.DEC; }
+            )
+            { suffix = true; }
+        )?
+    ) #SuffixExp(suffix)
+}
+
+void AccessExp() #AccessExp(>1) : {}
+{
+    Subscript() ( <DOT> Subscript() )*
+}
+void Subscript() #Subscript(>1) : {}
+{
+    FunctionCall() ( <LBRACE> Expression() <RBRACE> )*
+}
+
+void FunctionCall() #FunctionCall(>1) : {}
+{
+    ParenExp() ( <LPAREN> Expression() ( <COMMA> Expression() )* <RPAREN> )?
+}
+
+void ParenExp() : {}
+{
+    ( <LPAREN> Expression() <RPAREN> ) | <NUMBER_LITERAL> #NumberLiteral(0) | <IDENTIFIER> #Identifier(0)
+}
