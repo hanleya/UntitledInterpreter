@@ -10,21 +10,27 @@ public interface ParserTreeConstants
   public int JJTFUNCPARAMS = 4;
   public int JJTFUNCPARAM = 5;
   public int JJTBLOCK = 6;
-  public int JJTVARDECL = 7;
-  public int JJTTYPE = 8;
-  public int JJTASSIGNMENTEXP = 9;
-  public int JJTOREXP = 10;
-  public int JJTANDEXP = 11;
-  public int JJTBOOLEXP = 12;
-  public int JJTADDEXP = 13;
-  public int JJTMULEXP = 14;
-  public int JJTEXPOEXP = 15;
-  public int JJTPREFIXEXP = 16;
-  public int JJTSUFFIXEXP = 17;
-  public int JJTACCESSEXP = 18;
-  public int JJTSUBSCRIPT = 19;
-  public int JJTFUNCTIONCALL = 20;
-  public int JJTNUMBERLITERAL = 21;
+  public int JJTBREAKSTMT = 7;
+  public int JJTRETURNSTMT = 8;
+  public int JJTVARDECL = 9;
+  public int JJTIFSTMT = 10;
+  public int JJTCONDITION = 11;
+  public int JJTWHILESTMT = 12;
+  public int JJTTYPE = 13;
+  public int JJTASSIGNMENTEXP = 14;
+  public int JJTOREXP = 15;
+  public int JJTANDEXP = 16;
+  public int JJTBOOLEXP = 17;
+  public int JJTADDEXP = 18;
+  public int JJTMULEXP = 19;
+  public int JJTEXPOEXP = 20;
+  public int JJTPREFIXEXP = 21;
+  public int JJTSUFFIXEXP = 22;
+  public int JJTACCESSEXP = 23;
+  public int JJTSUBSCRIPT = 24;
+  public int JJTFUNCTIONCALL = 25;
+  public int JJTPARAMS = 26;
+  public int JJTNUMBERLITERAL = 27;
 
 
   public String[] jjtNodeName = {
@@ -35,7 +41,12 @@ public interface ParserTreeConstants
     "FuncParams",
     "FuncParam",
     "Block",
+    "BreakStmt",
+    "ReturnStmt",
     "VarDecl",
+    "IfStmt",
+    "Condition",
+    "WhileStmt",
     "Type",
     "AssignmentExp",
     "OrExp",
@@ -49,7 +60,8 @@ public interface ParserTreeConstants
     "AccessExp",
     "Subscript",
     "FunctionCall",
+    "Params",
     "NumberLiteral",
   };
 }
-/* JavaCC - OriginalChecksum=545647a0d3736fab1f9cefd3bfa612dc (do not edit this line) */
+/* JavaCC - OriginalChecksum=a9d7a3f9c9c936a5b31f11076eb23273 (do not edit this line) */

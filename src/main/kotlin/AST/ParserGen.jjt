@@ -92,7 +92,8 @@ TOKEN : /* ARITHMETIC & BOOLEAN OPERATORS */
 
 TOKEN : /* KEYWORDS */
 {
-      < CLASS : "class" >
+      < BREAK : "break" >
+    | < CLASS : "class" >
     | < FALSE : "false" >
     | < FUNC : "func" >
     | < IF : "if" >
@@ -154,13 +155,30 @@ void Block() #Block : {}
 
 void Statement() : {}
 {
-    (VarDecl() <SCOLON>) | (Expression() <SCOLON>)
+      (VarDecl() <SCOLON>)
+    | (Expression() <SCOLON>)
+    | (<BREAK> <SCOLON>) #BreakStmt
+    | (<RETURN> <SCOLON>) #ReturnStmt
+    | IfStmt()
+    | WhileStmt()
 }
 
 void VarDecl() #VarDecl(3) : {}
 {
     <LET> <IDENTIFIER> #Identifier
     <COLON> Type() <ASSIGN> Expression()
+}
+
+void IfStmt() #IfStmt(2) : {}
+{
+    <IF> Expression() #Condition
+    Block()
+}
+
+void WhileStmt() #WhileStmt(2) : {}
+{
+    <WHILE> Expression() #Condition
+    Block()
 }
 
 
@@ -286,7 +304,11 @@ void Subscript() #Subscript(>1) : {}
 
 void FunctionCall() #FunctionCall(>1) : {}
 {
-    ParenExp() ( <LPAREN> Expression() ( <COMMA> Expression() )* <RPAREN> )?
+    ParenExp() ( <LPAREN> ParamList() <RPAREN> )?
+}
+void ParamList() #Params : {}
+{
+    ( Expression() ( <COMMA> Expression() )* )?
 }
 
 void ParenExp() : {}
