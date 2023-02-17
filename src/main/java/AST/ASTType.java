@@ -3,6 +3,9 @@
 package AST;
 
 public class ASTType extends SimpleNode {
+
+  public int type;
+
   public ASTType(int id) {
     super(id);
   }

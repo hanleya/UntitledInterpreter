@@ -3,6 +3,9 @@
 package AST;
 
 public class ASTIdentifier extends SimpleNode {
+
+  public String image;
+
   public ASTIdentifier(int id) {
     super(id);
   }

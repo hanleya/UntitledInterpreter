@@ -97,8 +97,11 @@ TOKEN : /* KEYWORDS */
     | < FALSE : "false" >
     | < FUNC : "func" >
     | < IF : "if" >
+    | < INT : "int">
     | < LET : "let" >
+    | < REAL : "real">
     | < RETURN : "return" >
+    | < STRING : "string">
     | < TRUE : "true" >
     | < VOID : "void" >
     | < WHILE : "while" >
@@ -129,7 +132,7 @@ void Function() #Function : {}
 
 void FunctionHead() : {}
 {
-    <FUNC> <IDENTIFIER> #Identifier
+    <FUNC> Identifier()
     <LPAREN> DefParamList() <RPAREN>
     (<ARROW> Type())?
 }
@@ -141,7 +144,7 @@ void DefParamList() #FuncParams : {}
 
 void DefParam() #FuncParam(2) : {}
 {
-     <IDENTIFIER> #Identifier <COLON> Type()
+     Identifier() <COLON> Type()
 }
 
 
@@ -165,7 +168,7 @@ void Statement() : {}
 
 void VarDecl() #VarDecl(3) : {}
 {
-    <LET> <IDENTIFIER> #Identifier
+    <LET> Identifier()
     <COLON> Type() <ASSIGN> Expression()
 }
 
@@ -186,7 +189,9 @@ void WhileStmt() #WhileStmt(2) : {}
 
 void Type() #Type : {}
 {
-    <IDENTIFIER>
+      (<INT> { jjtThis.type = 1; })
+    | (<REAL> { jjtThis.type = 2; })
+    | (<STRING> { jjtThis.type = 3; })
 }
 
 
@@ -313,5 +318,10 @@ void ParamList() #Params : {}
 
 void ParenExp() : {}
 {
-    ( <LPAREN> Expression() <RPAREN> ) | <NUMBER_LITERAL> #NumberLiteral(0) | <IDENTIFIER> #Identifier(0)
+    ( <LPAREN> Expression() <RPAREN> ) | <NUMBER_LITERAL> #NumberLiteral(0) | Identifier()
+}
+
+void Identifier() #Identifier : { Token t; }
+{
+    t = <IDENTIFIER> { jjtThis.image = t.image; }
 }

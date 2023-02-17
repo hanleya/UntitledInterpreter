@@ -93,19 +93,25 @@ public interface ParserConstants {
   /** RegularExpression Id. */
   int IF = 46;
   /** RegularExpression Id. */
-  int LET = 47;
+  int INT = 47;
   /** RegularExpression Id. */
-  int RETURN = 48;
+  int LET = 48;
   /** RegularExpression Id. */
-  int TRUE = 49;
+  int REAL = 49;
   /** RegularExpression Id. */
-  int VOID = 50;
+  int RETURN = 50;
   /** RegularExpression Id. */
-  int WHILE = 51;
+  int STRING = 51;
   /** RegularExpression Id. */
-  int IDENTIFIER = 52;
+  int TRUE = 52;
   /** RegularExpression Id. */
-  int LETTER = 53;
+  int VOID = 53;
+  /** RegularExpression Id. */
+  int WHILE = 54;
+  /** RegularExpression Id. */
+  int IDENTIFIER = 55;
+  /** RegularExpression Id. */
+  int LETTER = 56;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -159,8 +165,11 @@ public interface ParserConstants {
     "\"false\"",
     "\"func\"",
     "\"if\"",
+    "\"int\"",
     "\"let\"",
+    "\"real\"",
     "\"return\"",
+    "\"string\"",
     "\"true\"",
     "\"void\"",
     "\"while\"",
