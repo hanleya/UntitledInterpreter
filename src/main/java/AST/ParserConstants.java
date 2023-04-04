@@ -11,107 +11,109 @@ public interface ParserConstants {
   /** End of File. */
   int EOF = 0;
   /** RegularExpression Id. */
-  int NUMBER_LITERAL = 6;
+  int REAL_LITERAL = 6;
   /** RegularExpression Id. */
-  int DIGIT = 7;
+  int DIGIT_STRING = 7;
   /** RegularExpression Id. */
-  int PLUS = 8;
+  int DIGIT = 8;
   /** RegularExpression Id. */
-  int MINUS = 9;
+  int PLUS = 9;
   /** RegularExpression Id. */
-  int MUL = 10;
+  int MINUS = 10;
   /** RegularExpression Id. */
-  int DIV = 11;
+  int MUL = 11;
   /** RegularExpression Id. */
-  int MOD = 12;
+  int DIV = 12;
   /** RegularExpression Id. */
-  int POWER = 13;
+  int MOD = 13;
   /** RegularExpression Id. */
-  int AND = 14;
+  int POWER = 14;
   /** RegularExpression Id. */
-  int OR = 15;
+  int AND = 15;
   /** RegularExpression Id. */
-  int NOT = 16;
+  int OR = 16;
   /** RegularExpression Id. */
-  int EQ = 17;
+  int NOT = 17;
   /** RegularExpression Id. */
-  int NEQ = 18;
+  int EQ = 18;
   /** RegularExpression Id. */
-  int LT = 19;
+  int NEQ = 19;
   /** RegularExpression Id. */
-  int LEQ = 20;
+  int LT = 20;
   /** RegularExpression Id. */
-  int GT = 21;
+  int LEQ = 21;
   /** RegularExpression Id. */
-  int GEQ = 22;
+  int GT = 22;
   /** RegularExpression Id. */
-  int LPAREN = 23;
+  int GEQ = 23;
   /** RegularExpression Id. */
-  int RPAREN = 24;
+  int LPAREN = 24;
   /** RegularExpression Id. */
-  int LBRACE = 25;
+  int RPAREN = 25;
   /** RegularExpression Id. */
-  int RBRACE = 26;
+  int LBRACE = 26;
   /** RegularExpression Id. */
-  int LBRACKET = 27;
+  int RBRACE = 27;
   /** RegularExpression Id. */
-  int RBRACKET = 28;
+  int LBRACKET = 28;
   /** RegularExpression Id. */
-  int ASSIGN = 29;
+  int RBRACKET = 29;
   /** RegularExpression Id. */
-  int ASADD = 30;
+  int ASSIGN = 30;
   /** RegularExpression Id. */
-  int ASSUB = 31;
+  int ASADD = 31;
   /** RegularExpression Id. */
-  int ASMUL = 32;
+  int ASSUB = 32;
   /** RegularExpression Id. */
-  int ASDIV = 33;
+  int ASMUL = 33;
   /** RegularExpression Id. */
-  int ASMOD = 34;
+  int ASDIV = 34;
   /** RegularExpression Id. */
-  int INC = 35;
+  int ASMOD = 35;
   /** RegularExpression Id. */
-  int DEC = 36;
+  int INC = 36;
   /** RegularExpression Id. */
-  int COMMA = 37;
+  int DEC = 37;
   /** RegularExpression Id. */
-  int DOT = 38;
+  int COMMA = 38;
   /** RegularExpression Id. */
-  int COLON = 39;
+  int DOT = 39;
   /** RegularExpression Id. */
-  int SCOLON = 40;
+  int COLON = 40;
   /** RegularExpression Id. */
-  int ARROW = 41;
+  int SCOLON = 41;
   /** RegularExpression Id. */
-  int BREAK = 42;
+  int ARROW = 42;
   /** RegularExpression Id. */
-  int CLASS = 43;
+  int BREAK = 43;
   /** RegularExpression Id. */
-  int FALSE = 44;
+  int CLASS = 44;
   /** RegularExpression Id. */
-  int FUNC = 45;
+  int FALSE = 45;
   /** RegularExpression Id. */
-  int IF = 46;
+  int FUNC = 46;
   /** RegularExpression Id. */
-  int INT = 47;
+  int IF = 47;
   /** RegularExpression Id. */
-  int LET = 48;
+  int INT = 48;
   /** RegularExpression Id. */
-  int REAL = 49;
+  int LET = 49;
   /** RegularExpression Id. */
-  int RETURN = 50;
+  int REAL = 50;
   /** RegularExpression Id. */
-  int STRING = 51;
+  int RETURN = 51;
   /** RegularExpression Id. */
-  int TRUE = 52;
+  int STRING = 52;
   /** RegularExpression Id. */
-  int VOID = 53;
+  int TRUE = 53;
   /** RegularExpression Id. */
-  int WHILE = 54;
+  int VOID = 54;
   /** RegularExpression Id. */
-  int IDENTIFIER = 55;
+  int WHILE = 55;
   /** RegularExpression Id. */
-  int LETTER = 56;
+  int IDENTIFIER = 56;
+  /** RegularExpression Id. */
+  int LETTER = 57;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -124,7 +126,8 @@ public interface ParserConstants {
     "\"\\n\"",
     "\"\\r\"",
     "\"\\f\"",
-    "<NUMBER_LITERAL>",
+    "<REAL_LITERAL>",
+    "<DIGIT_STRING>",
     "<DIGIT>",
     "\"+\"",
     "\"-\"",

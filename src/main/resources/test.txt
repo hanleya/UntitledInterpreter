@@ -1,2 +1,4 @@
-func Hello (a: int, b: real) -> int {
+func main() -> int {
+    let a: int = 3;
+    a;
 }

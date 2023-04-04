@@ -5,10 +5,12 @@ import java.io.*;
 
 public class InterpreterMain {
 
-
-
     public static void main(String[] args) {
         TNode root = getRoot();
+        root.printNode();
+
+        InterpreterExecutor exec = new InterpreterExecutor(root);
+        exec.execute();
     }
 
     @Nullable
@@ -23,15 +25,12 @@ public class InterpreterMain {
             return null;
         }
 
-        root.dump(" ");
+        //root.dump(" ");
 
         return BuildTree.build(root);
     }
 
 
-    //~~~~~~~~~~~~~~~~~~~~~~~
-    //  TREE BUILDER
-    //~~~~~~~~~~~~~~~~~~~~~~~
 
 
 

@@ -7,5 +7,5 @@ public enum NodeOps {
     ADDX, SUBX, MULX, DIVX, MODX, EXPOX,
     PREINC, PREDEC, POSTINC, POSTDEC, NOT,
     SUBSCRIPT, CALL,
-    VAR, TYPE
+    VAR, LIT
 }

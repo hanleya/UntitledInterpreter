@@ -45,7 +45,8 @@ SKIP : /* WHITE SPACE */
 
 TOKEN : /* NUMBER */
 {
-    < NUMBER_LITERAL: (<DIGIT>)+ ("." (<DIGIT>)+)? >
+    < REAL_LITERAL: <DIGIT_STRING> "." <DIGIT_STRING> >
+    | < DIGIT_STRING: (<DIGIT>)+ >
     | < #DIGIT: ["0"-"9"] >
 }
 
@@ -320,7 +321,21 @@ void Statement() : {}
         jjtree.openNodeScope(jjtn002);
       }
       try {
-/*@egen*/ (<RETURN> <SCOLON>)/*@bgen(jjtree)*/
+/*@egen*/ (<RETURN> Expression() <SCOLON>)/*@bgen(jjtree)*/
+      } catch (Throwable jjte002) {
+        if (jjtc002) {
+          jjtree.clearNodeScope(jjtn002);
+          jjtc002 = false;
+        } else {
+          jjtree.popNode();
+        }
+        if (jjte002 instanceof RuntimeException) {
+          throw (RuntimeException)jjte002;
+        }
+        if (jjte002 instanceof ParseException) {
+          throw (ParseException)jjte002;
+        }
+        throw (Error)jjte002;
       } finally {
         if (jjtc002) {
           jjtree.closeNodeScope(jjtn002, true);
@@ -827,7 +842,7 @@ void SuffixExp() : { boolean suffix = false; }
     try {
 /*@egen*/
     (
-        AccessExp()
+        Subscript()
         (
             (
                   <INC> { jjtn001.op = ASTSuffixExp.OP.INC; }
@@ -858,36 +873,6 @@ void SuffixExp() : { boolean suffix = false; }
 /*@egen*/                   
 }
 
-void AccessExp()                : {/*@bgen(jjtree) #AccessExp(> 1) */
-  ASTAccessExp jjtn000 = new ASTAccessExp(JJTACCESSEXP);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-/*@egen*/}
-{/*@bgen(jjtree) #AccessExp(> 1) */
-    try {
-/*@egen*/
-    Subscript() ( <DOT> Subscript() )*/*@bgen(jjtree)*/
-    } catch (Throwable jjte000) {
-      if (jjtc000) {
-        jjtree.clearNodeScope(jjtn000);
-        jjtc000 = false;
-      } else {
-        jjtree.popNode();
-      }
-      if (jjte000 instanceof RuntimeException) {
-        throw (RuntimeException)jjte000;
-      }
-      if (jjte000 instanceof ParseException) {
-        throw (ParseException)jjte000;
-      }
-      throw (Error)jjte000;
-    } finally {
-      if (jjtc000) {
-        jjtree.closeNodeScope(jjtn000, jjtree.nodeArity() > 1);
-      }
-    }
-/*@egen*/
-}
 void Subscript()                : {/*@bgen(jjtree) #Subscript(> 1) */
   ASTSubscript jjtn000 = new ASTSubscript(JJTSUBSCRIPT);
   boolean jjtc000 = true;
@@ -982,20 +967,55 @@ void ParamList()         : {/*@bgen(jjtree) Params */
 
 void ParenExp() : {}
 {
-    ( <LPAREN> Expression() <RPAREN> ) |/*@bgen(jjtree) #NumberLiteral( 0) */
-                                         {
-                                           ASTNumberLiteral jjtn001 = new ASTNumberLiteral(JJTNUMBERLITERAL);
-                                           boolean jjtc001 = true;
-                                           jjtree.openNodeScope(jjtn001);
-                                         }
-                                         try {
-/*@egen*/ <NUMBER_LITERAL>/*@bgen(jjtree)*/
-                                         } finally {
-                                           if (jjtc001) {
-                                             jjtree.closeNodeScope(jjtn001,  0);
-                                           }
-                                         }
-/*@egen*/                   | Identifier()
+    ( <LPAREN> Expression() <RPAREN> ) | IntLiteral() | RealLiteral() | Identifier()
+}
+
+void IntLiteral()                : {/*@bgen(jjtree) #IntLiteral( 0) */
+                                     ASTIntLiteral jjtn000 = new ASTIntLiteral(JJTINTLITERAL);
+                                     boolean jjtc000 = true;
+                                     jjtree.openNodeScope(jjtn000);
+/*@egen*/ Token t; }
+{/*@bgen(jjtree) #IntLiteral( 0) */
+    try {
+/*@egen*/
+    t = <DIGIT_STRING>/*@bgen(jjtree)*/
+                       {
+                         jjtree.closeNodeScope(jjtn000,  0);
+                         jjtc000 = false;
+                       }
+/*@egen*/ {
+        jjtn000.val = Integer.parseInt(t.image);
+    }/*@bgen(jjtree)*/
+    } finally {
+      if (jjtc000) {
+        jjtree.closeNodeScope(jjtn000,  0);
+      }
+    }
+/*@egen*/
+}
+
+void RealLiteral()                 : {/*@bgen(jjtree) #RealLiteral( 0) */
+                                       ASTRealLiteral jjtn000 = new ASTRealLiteral(JJTREALLITERAL);
+                                       boolean jjtc000 = true;
+                                       jjtree.openNodeScope(jjtn000);
+/*@egen*/ Token t; }
+{/*@bgen(jjtree) #RealLiteral( 0) */
+    try {
+/*@egen*/
+    t = <REAL_LITERAL>/*@bgen(jjtree)*/
+                       {
+                         jjtree.closeNodeScope(jjtn000,  0);
+                         jjtc000 = false;
+                       }
+/*@egen*/ {
+        jjtn000.val = Double.parseDouble(t.image);
+    }/*@bgen(jjtree)*/
+    } finally {
+      if (jjtc000) {
+        jjtree.closeNodeScope(jjtn000,  0);
+      }
+    }
+/*@egen*/
 }
 
 void Identifier()             : {/*@bgen(jjtree) Identifier */

@@ -25,11 +25,11 @@ public interface ParserTreeConstants
   public int JJTEXPOEXP = 19;
   public int JJTPREFIXEXP = 20;
   public int JJTSUFFIXEXP = 21;
-  public int JJTACCESSEXP = 22;
-  public int JJTSUBSCRIPT = 23;
-  public int JJTFUNCTIONCALL = 24;
-  public int JJTPARAMS = 25;
-  public int JJTNUMBERLITERAL = 26;
+  public int JJTSUBSCRIPT = 22;
+  public int JJTFUNCTIONCALL = 23;
+  public int JJTPARAMS = 24;
+  public int JJTINTLITERAL = 25;
+  public int JJTREALLITERAL = 26;
   public int JJTIDENTIFIER = 27;
 
 
@@ -56,12 +56,12 @@ public interface ParserTreeConstants
     "ExpoExp",
     "PrefixExp",
     "SuffixExp",
-    "AccessExp",
     "Subscript",
     "FunctionCall",
     "Params",
-    "NumberLiteral",
+    "IntLiteral",
+    "RealLiteral",
     "Identifier",
   };
 }
-/* JavaCC - OriginalChecksum=ab80fc578e42d690028c7029b3fc66fb (do not edit this line) */
+/* JavaCC - OriginalChecksum=eb7f933cf0f10ab7ce0abab10fc6b7e0 (do not edit this line) */
