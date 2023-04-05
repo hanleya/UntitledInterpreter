@@ -387,7 +387,7 @@ public class BuildTree {
                     evalTypesExpr(n.getChild(0), vTypes, fTypes);
                     checkTypes(DataType.Int, n.getChild(0));
 
-                    evalTypesBlock(n.getChild(1), DataType.None, new VarScope(vTypes), fTypes);
+                    evalTypesBlock(n.getChild(1), expectedType, new VarScope(vTypes), fTypes);
                     break;
                 default:
                     evalTypesExpr(n, vTypes, fTypes);

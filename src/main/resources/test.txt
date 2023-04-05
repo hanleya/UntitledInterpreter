@@ -1,4 +1,27 @@
 func main() -> int {
-    let a: int = 3;
-    a;
+
+    let n: int = 7;
+
+    factorial_iter(n);
+    factorial_rec(n);
+
+}
+
+func factorial_iter(n: int) -> int {
+    let i: int = n;
+
+    while (--n > 1) {
+        i *= n;
+    }
+
+    return i;
+}
+
+func factorial_rec(n: int) -> int {
+    if n == 1 {
+        return 1;
+    }
+    if n != 1 {
+        return n * factorial_rec(n - 1);
+    }
 }
